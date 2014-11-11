@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Music Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <style>
+    body {
+        padding-top: 60px;
+        /* 60px to make the container go all the way to the bottom of the topbar */
+    }
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
+    <script src="example.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script data-require="ng-table@*" data-semver="0.3.1" src="http://bazalt-cms.com/assets/ng-table/0.3.1/ng-table.js"></script>
+
+    <link data-require="ng-table@*" data-semver="0.3.1" rel="stylesheet" href="http://bazalt-cms.com/assets/ng-table/0.3.1/ng-table.css" />
+
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
+    <script src='javascripts/dircontroller.js'></script>
+    <script src='javascripts/services.js'></script>
+</head>
+
+<body ng-app='dirtest'>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Playlist Directive</a>
+        </div>
+    </div>
+    <div ng-controller='modal'>
+        <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+                <h3 class="modal-title">Enter any track to add it to the playlist</h3>
+            </div>
+            <div class='modal-body'>
+                <input type='text' ng-model='trackname'></input>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary pull-left" ng-click="ok()">OK</button>
+                <button class="btn btn-warning pull-left" ng-click="cancel()">Cancel</button>
+            </div>
+        </script>
+        <div class='jumbotron row'>
+            <div class='col-lg-6'>
+                <audio controls class='pull-right'>
+                    <source src="http://a1951.phobos.apple.com/us/r1000/049/Music6/v4/a1/6b/6a/a16b6a31-1db2-3ab1-0ae0-0bc75fdf7fc3/mzaf_1203378095963884037.plus.aac.p.m4a">
+                        Your browser does not support the audio element.
+                </audio>
+            </div>
+
+            <div class='col-lg-2'>
+                <div class='pull-right'>
+                    <button class="btn btn-default" ng-click="open()">Add a song !</button>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="container" ng-controller='dirtest'>
+
+        <div id="player"></div>
+        <table ng-table="tableParams" class="table">
+            <tr ng-repeat="track in $data">
+                <td data-title="'Name'" sortable="'name'" width="200">
+                    {{track.name}}
+                </td>
+                <td data-title="'Artist'" width="200" sortable="'artist'">
+                    {{track.artist}}
+                </td>
+                <td data-title="'Cover'" width="100">
+                    <img src='{{track.imgurl}}' width='100px' height='120px'>
+                </td>
+
+            </tr>
+        </table>
+
+    </div>
+
+
+
+    <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+
+</body>
+
+
+</html>

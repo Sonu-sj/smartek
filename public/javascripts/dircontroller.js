@@ -1,15 +1,15 @@
 angular.module('dirtest', ['myService', 'ngTable','ui.bootstrap'])
-    .controller('dirtest', function($scope, testFactory, ngTableParams, $filter) {
-        testFactory.getdata().success(function(data1) {
+    .controller('dirtest', function($scope, testFactory, ngTableParams, $filter,$rootScope) {
+     $scope.loaddata = function()
+     {
+           testFactory.getdata().success(function(data1) {
             $scope.testdata = data1;
             var data = data1;
 
             $scope.tableParams = new ngTableParams({
                 page: 1, // show first page
                 count: 2, // count per page
-                sorting: {
-                    name: 'asc' // initial sorting
-                }
+                
             }, {
                 total: data.length, // length of data
 
@@ -22,7 +22,13 @@ angular.module('dirtest', ['myService', 'ngTable','ui.bootstrap'])
                 }
             });
         })
-
+     }
+        $scope.loaddata();
+        $rootScope.$on("myEvent", function (event, args) {
+           
+  $scope['tableParams'] = null;
+  $scope.loaddata();
+});
 
     })
     .controller('modal', function($scope,$modal,$log) {
@@ -51,7 +57,7 @@ angular.module('dirtest', ['myService', 'ngTable','ui.bootstrap'])
     }
     )
 
-.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,sendFactory) {
+.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items,sendFactory,$rootScope) {
 
   $scope.items = items;
   $scope.selected = {
@@ -61,7 +67,8 @@ angular.module('dirtest', ['myService', 'ngTable','ui.bootstrap'])
   $scope.ok = function () {
     $modalInstance.close($scope.selected.item);
    
-    sendFactory.postdata($scope.trackname).success(function(data){console.log(data)});
+    sendFactory.postdata($scope.trackname).success(function(data){$rootScope.$broadcast("myEvent")});
+
   };
 
   $scope.cancel = function () {

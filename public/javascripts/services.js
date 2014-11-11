@@ -5,7 +5,8 @@ angular.module('myService', [])
     return {
         getdata: function() {
             //$http.get('/retrieve').success(console.log('success'));
-            return $http.get('/retrieve')
+            
+            return $http.get('/getdata')
 
         }
     }
