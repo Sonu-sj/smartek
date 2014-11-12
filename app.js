@@ -16,7 +16,7 @@ var uristring =
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
     //'mongodb://localhost/Trackdb';
-    'mongodb://sonu:sonu123@ds051970.mongolab.com:51970/tracks'
+   'mongodb://sonu:sonu123@ds051970.mongolab.com:51970/tracks'
 // view engine setup
 
 
@@ -76,14 +76,15 @@ app.get('/getdata',function(req,res){
         )
 })
 app.post('/send', function(req, res) {
-
+    console.log(req.body.trackname);
     request('http://itunes.apple.com/search?term=' + req.body.trackname + '&country=us&limit=1&entity=song', function(error, response, body) {
     //request('http://localhost:3000/testdata', function(error, response, body) {
         if (!error && response.statusCode == 200) {
             //console.log(body) // Print the google web page.
             //console.log(JSON.parse(body).results[0].artistName);
             var result = JSON.parse(body).results[0];
-            console.log(result);
+           if(result)
+           {
             var resp = result.artistName;
             
             var ntrack = new track();
@@ -98,7 +99,7 @@ app.post('/send', function(req, res) {
                         res.send(resp);
             });
 
-            
+            }
         } else
             console.log(error);
     })

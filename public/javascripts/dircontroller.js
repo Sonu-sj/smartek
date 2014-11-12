@@ -1,14 +1,27 @@
-angular.module('dirtest', ['myService', 'ngTable', 'ui.bootstrap','ngSanitize'])
-    .controller('dirtest', function($scope, testFactory, ngTableParams, $filter, $rootScope, $timeout,$sce) {
-         $scope.song = {}
-        // $scope.song.source = sourceurl;
-         
+angular.module('dirtest', ['myService', 'ngTable', 'ui.bootstrap', 'ngSanitize'])
+    .controller('dirtest', function($scope, testFactory, ngTableParams, $filter, $rootScope, $timeout, $sce) {
+        $scope.song = {}
+            // $scope.song.source = sourceurl;
 
-        $scope.loaddata = function() {
+
+        $scope.loaddata = function(param) {
             testFactory.getdata().success(function(data1) {
+                
                 $scope.testdata = data1;
                 var data = data1;
-
+              
+                $scope.song.source = $sce.trustAsResourceUrl(data[0].trackurl);
+                  $timeout(function() {
+                document.getElementById("myAudio").load();
+               
+            }, 0)
+                 //document.getElementById("myAudio").load();
+                $scope.findstyle = {
+                    'background-image': 'url(' + data[0].imgurl + ')',
+                    'bacground-size': 'contain',
+                    'background-repeat': 'no-repeat',
+                    'background-position': '20%'
+                }
                 $scope.tableParams = new ngTableParams({
                     page: 1, // show first page
                     count: 3, // count per page
@@ -28,24 +41,20 @@ angular.module('dirtest', ['myService', 'ngTable', 'ui.bootstrap','ngSanitize'])
             })
         }
         $scope.loaddata();
-        $scope.findstyle = {
-             'background-image': 'url(http://a1.mzstatic.com/us/r30/Music/v4/2f/71/9a/2f719a84-49f7-f281-0e5f-f3613d7892f7/886443548664.100x100-75.jpg)',
-             'bacground-size'  : 'contain',
-             'background-repeat':'no-repeat',
-             'background-position':'20%' 
-        }
-     
+
+
+
         $scope.toTestInput = function() {
             console.log($scope.testInput);
 
         }
 
-        $scope.play = function(sourceurl,imgurl) {
+        $scope.play = function(sourceurl, imgurl) {
 
-            
-           $scope.song.source = $sce.trustAsResourceUrl(sourceurl);
+
+            $scope.song.source = $sce.trustAsResourceUrl(sourceurl);
             console.log($scope.findstyle)
-            $scope.findstyle['background-image'] = 'url(' + imgurl +')';
+            $scope.findstyle['background-image'] = 'url(' + imgurl + ')';
             console.log($scope.findstyle);
             $timeout(function() {
                 document.getElementById("myAudio").load();
@@ -57,7 +66,7 @@ angular.module('dirtest', ['myService', 'ngTable', 'ui.bootstrap','ngSanitize'])
 
 
             $scope['tableParams'] = null;
-            $scope.loaddata();
+            $scope.loaddata('songadded');
         });
 
     })
