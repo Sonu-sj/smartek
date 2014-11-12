@@ -15,8 +15,8 @@ var track = require('./models/model.js');
 var uristring =
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
-    'mongodb://localhost/Trackdb';
-    //mongodb://sonu:sonu123@ds051970.mongolab.com:51970/tracks
+    //'mongodb://localhost/Trackdb';
+    'mongodb://sonu:sonu123@ds051970.mongolab.com:51970/tracks'
 // view engine setup
 
 
