@@ -16,7 +16,7 @@ var uristring =
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
     'mongodb://localhost/Trackdb';
-
+    //mongodb://sonu:sonu123@ds051970.mongolab.com:51970/tracks
 // view engine setup
 
 
@@ -69,7 +69,7 @@ app.get('/retrieve', function(req, res) {
     res.json(data);
 });
 app.get('/getdata',function(req,res){
-    track.find({}).limit(4).sort({'_id':-1}).exec(function(err,data)
+    track.find({}).limit(8).sort({'_id':-1}).exec(function(err,data)
 {
     res.json(data);
 }

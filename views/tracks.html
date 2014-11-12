@@ -27,6 +27,7 @@
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
     <script src='javascripts/dircontroller.js'></script>
     <script src='javascripts/services.js'></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-sanitize.min.js"></script>
 </head>
 
 <body ng-app='dirtest' ng-controller='dirtest'>
@@ -49,7 +50,7 @@
                 <button class="btn btn-warning pull-left" ng-click="cancel()">Cancel</button>
             </div>
         </script>
-        <div class='jumbotron row'>
+        <div class='jumbotron row' ng-style='findstyle'>
             <div class='col-lg-6' id='mycontainer'>
                 <audio id='myAudio' controls class='pull-right'>
                     <source ng-src="{{song.source}}">
@@ -72,7 +73,7 @@
 
         <div id="player"></div>
         <table ng-table="tableParams" class="table">
-            <tr ng-repeat="track in $data" ng-class="{red: hover}" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click ='play()'>
+            <tr ng-repeat="track in $data" ng-class="{red: hover}" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click ='play(track.trackurl,track.imgurl)'>
                 <td data-title="'Name'" sortable="'name'" width="200">
                     {{track.name}}
                 </td>
