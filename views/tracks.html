@@ -29,14 +29,14 @@
     <script src='javascripts/services.js'></script>
 </head>
 
-<body ng-app='dirtest'>
+<body ng-app='dirtest' ng-controller='dirtest'>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Playlist Directive</a>
         </div>
     </div>
-    <div ng-controller='modal'>
+    <div>
         <script type="text/ng-template" id="myModalContent.html">
             <div class="modal-header">
                 <h3 class="modal-title">Enter any track to add it to the playlist</h3>
@@ -50,16 +50,17 @@
             </div>
         </script>
         <div class='jumbotron row'>
-            <div class='col-lg-6'>
-                <audio controls class='pull-right'>
-                    <source src="http://a1951.phobos.apple.com/us/r1000/049/Music6/v4/a1/6b/6a/a16b6a31-1db2-3ab1-0ae0-0bc75fdf7fc3/mzaf_1203378095963884037.plus.aac.p.m4a">
+            <div class='col-lg-6' id='mycontainer'>
+                <audio id='myAudio' controls class='pull-right'>
+                    <source ng-src="{{song.source}}">
                         Your browser does not support the audio element.
                 </audio>
             </div>
 
             <div class='col-lg-2'>
-                <div class='pull-right'>
+                <div class='pull-right' ng-controller='modal'>
                     <button class="btn btn-default" ng-click="open()">Add a song !</button>
+
                 </div>
             </div>
         </div>
@@ -67,11 +68,11 @@
 
 
     </div>
-    <div class="container" ng-controller='dirtest'>
+    <div class="container">
 
         <div id="player"></div>
         <table ng-table="tableParams" class="table">
-            <tr ng-repeat="track in $data">
+            <tr ng-repeat="track in $data" ng-class="{red: hover}" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click ='play()'>
                 <td data-title="'Name'" sortable="'name'" width="200">
                     {{track.name}}
                 </td>
@@ -85,6 +86,10 @@
             </tr>
         </table>
 
+
+
+        <button class="btn btn-default" ng-click="play()">play it</button>
+
     </div>
 
 
@@ -97,6 +102,11 @@
 
 
 </body>
-
+<style>
+.red {
+    background-color: aqua;
+    cursor: pointer;
+}
+</style>
 
 </html>
