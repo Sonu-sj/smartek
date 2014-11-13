@@ -12,12 +12,13 @@ var app = express();
 var request = require('request');
 var mongoose = require("mongoose");
 var track = require('./models/model.js');
+var TM = require('./modules/track-manager.js')
 var uristring =
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
     //'mongodb://localhost/Trackdb';
-   'mongodb://sonu:sonu123@ds051970.mongolab.com:51970/tracks'
-// view engine setup
+    'mongodb://sonu:sonu123@ds051970.mongolab.com:51970/tracks'
+    // view engine setup
 
 
 mongoose.connect(uristring, function(err, res) {
@@ -55,49 +56,34 @@ app.get('/modal', function(req, res) {
 
 });
 
-app.get('/retrieve', function(req, res) {
-    var data = [{
-        name: "Reload",
-        artist: 'Sebastin Ingrosso',
-        url: 'http://digi10ve.com/wp-content/uploads/2013/04/reload.jpg'
-    }, {
-        name: "Love Me Again",
-        artist: 'John Newman',
-        url: 'http://ecx.images-amazon.com/images/I/51rvHl8rlsL._SL500_AA280_.jpg'
-    }, ];
+app.get('/getdata', function(req, res) {
+    TM.findtracks(function(e, data) {
+        res.json(data);
+    });
 
-    res.json(data);
-});
-app.get('/getdata',function(req,res){
-    track.find({}).limit(8).sort({'_id':-1}).exec(function(err,data)
-{
-    res.json(data);
-}
-        )
 })
 app.post('/send', function(req, res) {
     console.log(req.body.trackname);
     request('http://itunes.apple.com/search?term=' + req.body.trackname + '&country=us&limit=1&entity=song', function(error, response, body) {
-    //request('http://localhost:3000/testdata', function(error, response, body) {
+        //request('http://localhost:3000/testdata', function(error, response, body) {
         if (!error && response.statusCode == 200) {
             //console.log(body) // Print the google web page.
             //console.log(JSON.parse(body).results[0].artistName);
             var result = JSON.parse(body).results[0];
-           if(result)
-           {
-            var resp = result.artistName;
-            
-            var ntrack = new track();
-            ntrack.name = result.trackName; 
-            ntrack.artist = result.artistName;
-            ntrack.year = result.releaseDate;
-            ntrack.trackurl = result.previewUrl;
-            ntrack.imgurl = result.artworkUrl100;
-            ntrack.save(function(err) {
-                if (err) console.log(err)
+            if (result) {
+                var resp = result.artistName;
+
+                var ntrack = new track();
+                ntrack.name = result.trackName;
+                ntrack.artist = result.artistName;
+                ntrack.year = result.releaseDate;
+                ntrack.trackurl = result.previewUrl;
+                ntrack.imgurl = result.artworkUrl100;
+                ntrack.save(function(err) {
+                    if (err) console.log(err)
                     else
                         res.send(resp);
-            });
+                });
 
             }
         } else
